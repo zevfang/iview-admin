@@ -35,13 +35,7 @@
             <select id="locals" name="locals" style="width:100%">
                 <option value="-1">请选择区域</option>
             </select>
-            <input id="addOverlayGroup" type="button" class="btn" value="添加覆盖物群组"/>
-            <input id="removeOverlayGroup" type="button" class="btn" value="移除覆盖物群组"/>
-
-
         </div>
-
-
 
         <ul id="myList">
         </ul>
@@ -60,8 +54,15 @@
         <div class="input-item">
             <input id="clear" type="button" class="btn" value="清除" />
             <input id="close" type="button" class="btn" value="关闭绘图" />
+
+        </div>
+        <div class="input-item">
             <button class="btn" onclick="polyEditor.open()" style="margin-bottom: 5px">开始编辑</button>
             <button class="btn" onclick="polyEditor.close()">结束编辑</button>
+        </div>
+        <div class="input-item">
+            <input id="addOverlayGroup" type="button" class="btn" value="添加覆盖物群组"/>
+            <input id="removeOverlayGroup" type="button" class="btn" value="移除覆盖物群组"/>
         </div>
     </div>
 
@@ -515,29 +516,16 @@
            // event.obj 为绘制出来的覆盖物对象
            //alert('覆盖物对象绘制完成')
            console.log(polygon)
-           //todo 绘制后直接编辑
-           var polyEditor = new AMap.PolyEditor(map, polygon.obj)
-
-           polyEditor.on('addnode', function(event) {
-               log.info('触发事件：addnode')
-           })
-
-           polyEditor.on('adjust', function(event) {
-               log.info('触发事件：adjust')
-           })
-
-           polyEditor.on('removenode', function(event) {
-               log.info('触发事件：removenode')
-           })
-
-           polyEditor.on('end', function(event) {
-               log.info('触发事件： end')
-               // event.target 即为编辑后的多边形对象
-           })
 
        })
 
-
+       var path = [
+           [116.403322, 39.920255],
+           [116.410703, 39.897555],
+           [116.402292, 39.892353],
+           [116.389846, 39.891365]
+       ]
+       editor(map,path)
 
 
        //###############GEO绘制###############
@@ -572,6 +560,41 @@
 
    });
 
+
+   function editor(map,path) {
+       var polygon = new AMap.Polygon({
+           path: path,
+           strokeColor: "#FF33FF",
+           strokeWeight: 6,
+           strokeOpacity: 0.2,
+           fillOpacity: 0.4,
+           fillColor: '#1791fc',
+           zIndex: 50,
+       })
+
+       map.add(polygon)
+       // 缩放地图到合适的视野级别
+       map.setFitView([ polygon ])
+
+       var polyEditor = new AMap.PolyEditor(map, polygon)
+
+       polyEditor.on('addnode', function(event) {
+           log.info('触发事件：addnode')
+       })
+
+       polyEditor.on('adjust', function(event) {
+           log.info('触发事件：adjust')
+       })
+
+       polyEditor.on('removenode', function(event) {
+           log.info('触发事件：removenode')
+       })
+
+       polyEditor.on('end', function(event) {
+           log.info('触发事件： end')
+           // event.target 即为编辑后的多边形对象
+       })
+   }
 
 
 </script>
