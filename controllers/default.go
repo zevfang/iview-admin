@@ -4,11 +4,11 @@ import (
 	"github.com/astaxie/beego"
 )
 
-type MainController struct {
+type Controller struct {
 	beego.Controller
 }
 
-func (c *MainController) Get() {
+func (c *Controller) Index() {
 	c.Data["Website"] = "beego.me"
 	c.Data["Email"] = "astaxie@gmail.com"
 	c.TplName = "index.html"
